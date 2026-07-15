@@ -1,0 +1,30 @@
+---
+layout: base.njk
+title: "퍼펙터즈 | 게임 도전 과제 공략 블로그"
+description: "게임 도전 과제(업적/트로피)를 하나씩 파고들어 상세하게 기록하는 개인 공략 블로그, 퍼펙터즈입니다."
+permalink: "/index.html"
+eleventyExcludeFromCollections: true
+---
+<div class="hero">
+  <h1 class="display">{{ site.name }}</h1>
+  <p>{{ site.tagline }}</p>
+</div>
+
+<div class="post-list">
+{% for post in collections.posts %}
+  <a class="post-card" href="{{ post.url }}">
+    <span class="badge {{ post.data.category }}">{{ categoryLabel[post.data.category] }}</span>
+    <h2>{{ post.data.title }}</h2>
+    <p class="game-name">{{ post.data.game }}</p>
+    {% if post.data.difficulty %}
+    <div class="bar-row">
+      <span class="bar-label">난이도</span>
+      {% for i in range(1, 6) %}<div class="bar-seg {{ 'on' if i <= post.data.difficulty }}"></div>{% endfor %}
+    </div>
+    {% endif %}
+    <span class="meta">{{ post.date | readableDate }}</span>
+  </a>
+{% else %}
+  <p style="color:var(--text-muted);">아직 작성된 글이 없어요. /admin 에서 첫 글을 써보세요.</p>
+{% endfor %}
+</div>

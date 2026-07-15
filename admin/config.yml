@@ -1,0 +1,32 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/images/uploads"
+public_folder: "/assets/images/uploads"
+
+collections:
+  - name: "posts"
+    label: "글"
+    label_singular: "글"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "게임 이름", name: "game", widget: "string", required: false, hint: "특정 게임과 관련 없으면 비워두세요" }
+      - label: "분류"
+        name: "category"
+        widget: "select"
+        default: "challenge"
+        options:
+          - { label: "공지사항", value: "notice" }
+          - { label: "자유 게시판", value: "free" }
+          - { label: "도전 과제", value: "challenge" }
+          - { label: "공략", value: "guide" }
+          - { label: "요청 사항", value: "request" }
+      - { label: "난이도 (0~5, 선택)", name: "difficulty", widget: "number", default: 0, min: 0, max: 5, required: false }
+      - { label: "작성일", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "검색엔진용 요약 설명", name: "description", widget: "text", required: false, hint: "비워두면 사이트 기본 소개 문구가 쓰여요" }
+      - { label: "본문", name: "body", widget: "markdown" }

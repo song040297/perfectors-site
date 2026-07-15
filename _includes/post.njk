@@ -1,0 +1,44 @@
+---
+layout: base.njk
+ogType: article
+---
+<a class="back-link" href="/">← 목록으로</a>
+
+<div class="post-header">
+  <span class="badge {{ category }}">{{ categoryLabel[category] }}</span>
+  <h1 class="display">{{ title }}</h1>
+  <div class="post-meta">{{ game }} · {{ author or site.ownerName }} · {{ page.date | readableDate }}</div>
+  {% if difficulty %}
+  <div class="bar-row">
+    <span class="bar-label">난이도</span>
+    {% for i in range(1, 6) %}<div class="bar-seg {{ 'on' if i <= difficulty }}"></div>{% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+{{ content | toc | safe }}
+
+<div class="post-content">
+{{ content | safe }}
+</div>
+
+<div class="comments-section">
+  <h3>댓글</h3>
+  {% if giscus.repo %}
+  <script src="https://giscus.app/client.js"
+    data-repo="{{ giscus.repo }}"
+    data-repo-id="{{ giscus.repoId }}"
+    data-category="{{ giscus.category }}"
+    data-category-id="{{ giscus.categoryId }}"
+    data-mapping="pathname"
+    data-reactions-enabled="1"
+    data-theme="dark"
+    crossorigin="anonymous"
+    async>
+  </script>
+  {% else %}
+  <p style="color:var(--text-muted); font-size:13px;">
+    댓글을 연결하려면 giscus.app에서 발급받은 정보를 _data/giscus.json 파일에 입력해주세요.
+  </p>
+  {% endif %}
+</div>
