@@ -29,6 +29,13 @@ module.exports = function (eleventyConfig) {
     return `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())}`;
   });
 
+  eleventyConfig.addFilter("readingTime", (contentHtml) => {
+    if (!contentHtml) return 1;
+    const text = contentHtml.replace(/<[^>]+>/g, "");
+    const charCount = text.length;
+    return Math.max(1, Math.round(charCount / 500));
+  });
+
   // 렌더링된 본문 HTML에서 h2/h3 제목을 뽑아 목차(TOC)를 만드는 필터
   eleventyConfig.addFilter("toc", (contentHtml) => {
     if (!contentHtml) return "";
