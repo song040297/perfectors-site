@@ -21,12 +21,17 @@ collections:
         widget: "select"
         default: "challenge"
         options:
-          - { label: "공지사항", value: "notice" }
-          - { label: "자유 게시판", value: "free" }
           - { label: "도전 과제", value: "challenge" }
           - { label: "공략", value: "guide" }
+          - { label: "공지사항", value: "notice" }
+          - { label: "자유 게시판", value: "free" }
           - { label: "요청 사항", value: "request" }
       - { label: "난이도 (0~5, 선택)", name: "difficulty", widget: "number", default: 0, min: 0, max: 5, required: false }
       - { label: "작성일", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
       - { label: "검색엔진용 요약 설명", name: "description", widget: "text", required: false, hint: "비워두면 사이트 기본 소개 문구가 쓰여요" }
+      - label: "동영상 파일 업로드 (선택, 짧은 클립 전용)"
+        name: "videoUpload"
+        widget: "file"
+        required: false
+        hint: "업로드 후 여기 나오는 경로를 복사해서, 본문에 ::: video 경로 ::: 형태로 붙여넣으세요. 큰 영상은 유튜브 링크를 대신 사용하세요."
       - { label: "본문", name: "body", widget: "markdown" }
