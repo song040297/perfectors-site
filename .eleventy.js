@@ -4,6 +4,17 @@ const markdownItContainer = require("markdown-it-container");
 
 function pad(n) { return String(n).padStart(2, "0"); }
 
+// 유튜브/비메오 링크를 임베드용 주소로 바꿔줌. 해당 없으면 null 반환(직접 파일로 처리)
+function toEmbedUrl(url) {
+  if (!url) return null;
+  const trimmed = url.trim();
+  let m = trimmed.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}`;
+  m = trimmed.match(/vimeo\.com\/(\d+)/);
+  if (m) return `https://player.vimeo.com/video/${m[1]}`;
+  return null;
+}
+
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addPassthroughCopy("admin");
@@ -19,6 +30,21 @@ module.exports = function (eleventyConfig) {
         return tokens[idx].nesting === 1
           ? '<div class="tip-box">💡 '
           : "</div>";
+      },
+    })
+    .use(markdownItContainer, "video", {
+      validate: function (params) {
+        return params.trim().match(/^video\s+(.+)$/);
+      },
+      render: function (tokens, idx) {
+        if (tokens[idx].nesting !== 1) return "";
+        const m = tokens[idx].info.trim().match(/^video\s+(.+)$/);
+        const raw = m ? m[1].trim() : "";
+        const embedUrl = toEmbedUrl(raw);
+        if (embedUrl) {
+          return `<div class="video-embed"><iframe src="${embedUrl}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+        }
+        return `<video controls preload="metadata" src="${raw}"></video>`;
       },
     });
   eleventyConfig.setLibrary("md", md);
