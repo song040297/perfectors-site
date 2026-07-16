@@ -48,37 +48,68 @@ header {
 nav a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 14px; transition: color .15s; }
 nav a:hover { color: var(--gold); }
 
-main { max-width: 760px; margin: 0 auto; padding: 48px 20px 100px; }
+main { max-width: 880px; margin: 0 auto; padding: 48px 20px 100px; }
 
 .hero { text-align: center; padding: 36px 10px 44px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
 .hero h1 { font-size: 38px; margin: 0 0 12px; color: var(--gold); }
 .hero p { color: var(--text-muted); font-size: 15px; margin: 0; }
 
-.category-filter {
+.home-layout { display: flex; gap: 30px; align-items: flex-start; }
+.category-sidebar { flex: 0 0 170px; position: sticky; top: 84px; }
+.post-list-wrap { flex: 1; min-width: 0; }
+
+.sidebar-toggle {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin-bottom: 36px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
-.category-filter button {
+.sidebar-toggle:hover { border-color: var(--gold-dim); }
+.sidebar-toggle .icon { color: var(--gold); transition: transform .15s; font-size: 11px; }
+.sidebar-toggle.is-collapsed .icon { transform: rotate(-90deg); }
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.category-list.is-collapsed { display: none; }
+.category-list button {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 13px;
   font-weight: 500;
+  text-align: left;
   color: var(--text-muted);
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 7px 16px;
+  border-radius: 6px;
+  padding: 9px 14px;
   cursor: pointer;
   transition: all .15s;
 }
-.category-filter button:hover { border-color: var(--gold-dim); color: var(--text); }
-.category-filter button.active {
+.category-list button:hover { border-color: var(--gold-dim); color: var(--text); }
+.category-list button.active {
   background: var(--gold);
   border-color: var(--gold);
   color: #201A08;
   font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .home-layout { flex-direction: column; }
+  .category-sidebar { flex: none; width: 100%; position: static; }
+  .category-list { flex-direction: row; flex-wrap: wrap; }
+  .category-list button { flex: 0 0 auto; }
 }
 
 .post-list { display: flex; flex-direction: column; gap: 14px; }
