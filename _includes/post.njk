@@ -7,7 +7,7 @@ ogType: article
 <div class="post-header">
   <span class="badge {{ category }}">{{ categoryLabel[category] }}</span>
   <h1 class="display">{{ title }}</h1>
-  <div class="post-meta">{{ game }} · {{ author or site.ownerName }} · {{ page.date | readableDate }}</div>
+  <div class="post-meta">{{ game }} · {{ author or site.ownerName }} · {{ page.date | readableDate }} · 약 {{ content | readingTime }}분 소요</div>
   {% if difficulty %}
   <div class="bar-row">
     <span class="bar-label">난이도</span>
@@ -21,6 +21,25 @@ ogType: article
 <div class="post-content">
 {{ content | safe }}
 </div>
+
+{% set prevPost = collections.posts | getPreviousCollectionItem %}
+{% set nextPost = collections.posts | getNextCollectionItem %}
+{% if prevPost or nextPost %}
+<div class="post-nav">
+  {% if prevPost %}
+  <a class="post-nav-link prev" href="{{ prevPost.url }}">
+    <span class="post-nav-label">← 이전 글</span>
+    <span class="post-nav-title">{{ prevPost.data.title }}</span>
+  </a>
+  {% else %}<span></span>{% endif %}
+  {% if nextPost %}
+  <a class="post-nav-link next" href="{{ nextPost.url }}">
+    <span class="post-nav-label">다음 글 →</span>
+    <span class="post-nav-title">{{ nextPost.data.title }}</span>
+  </a>
+  {% endif %}
+</div>
+{% endif %}
 
 <div class="comments-section">
   <h3>댓글</h3>
