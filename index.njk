@@ -10,9 +10,18 @@ eleventyExcludeFromCollections: true
   <p>{{ site.tagline }}</p>
 </div>
 
-<div class="post-list">
+{% if collections.posts.length %}
+<div class="category-filter" id="category-filter">
+  <button type="button" data-filter="all" class="active">전체</button>
+  {% for key, label in categoryLabel %}
+  <button type="button" data-filter="{{ key }}">{{ label }}</button>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="post-list" id="post-list">
 {% for post in collections.posts %}
-  <a class="post-card" href="{{ post.url }}">
+  <a class="post-card" data-category="{{ post.data.category }}" href="{{ post.url }}">
     <span class="badge {{ post.data.category }}">{{ categoryLabel[post.data.category] }}</span>
     <h2>{{ post.data.title }}</h2>
     <p class="game-name">{{ post.data.game }}</p>
@@ -25,6 +34,32 @@ eleventyExcludeFromCollections: true
     <span class="meta">{{ post.date | readableDate }}</span>
   </a>
 {% else %}
-  <p style="color:var(--text-muted);">아직 작성된 글이 없어요. /admin 에서 첫 글을 써보세요.</p>
+  <div class="empty-state">아직 작성된 글이 없어요. /admin 에서 첫 글을 써보세요.</div>
 {% endfor %}
 </div>
+
+<p class="empty-state" id="no-match-message" style="display:none;">이 분류에는 아직 글이 없어요.</p>
+
+<script>
+(function () {
+  var buttons = document.querySelectorAll('#category-filter button');
+  var cards = document.querySelectorAll('#post-list .post-card');
+  var noMatch = document.getElementById('no-match-message');
+  if (!buttons.length) return;
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      buttons.forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var filter = btn.dataset.filter;
+      var visibleCount = 0;
+      cards.forEach(function (card) {
+        var show = filter === 'all' || card.dataset.category === filter;
+        card.classList.toggle('is-hidden', !show);
+        if (show) visibleCount++;
+      });
+      noMatch.style.display = visibleCount === 0 ? 'block' : 'none';
+    });
+  });
+})();
+</script>
