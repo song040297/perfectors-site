@@ -172,6 +172,18 @@ main { max-width: 880px; margin: 0 auto; padding: 48px 20px 100px; }
   background: rgba(232,185,77,0.1); border-left: 3px solid var(--gold);
   padding: 14px 18px; border-radius: 6px; margin: 20px 0; font-size: 15px;
 }
+.video-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  margin: 20px 0;
+  background: var(--panel);
+}
+.video-embed iframe {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+}
 
 .comments-section { margin-top: 52px; border-top: 1px solid var(--border); padding-top: 32px; }
 .comments-section h3 { font-size: 16px; color: var(--gold); margin-bottom: 18px; }
