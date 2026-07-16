@@ -10,38 +10,57 @@ eleventyExcludeFromCollections: true
   <p>{{ site.tagline }}</p>
 </div>
 
-{% if collections.posts.length %}
-<div class="category-filter" id="category-filter">
-  <button type="button" data-filter="all" class="active">전체</button>
-  {% for key, label in categoryLabel %}
-  <button type="button" data-filter="{{ key }}">{{ label }}</button>
-  {% endfor %}
-</div>
-{% endif %}
-
-<div class="post-list" id="post-list">
-{% for post in collections.posts %}
-  <a class="post-card" data-category="{{ post.data.category }}" href="{{ post.url }}">
-    <span class="badge {{ post.data.category }}">{{ categoryLabel[post.data.category] }}</span>
-    <h2>{{ post.data.title }}</h2>
-    <p class="game-name">{{ post.data.game }}</p>
-    {% if post.data.difficulty %}
-    <div class="bar-row">
-      <span class="bar-label">난이도</span>
-      {% for i in range(1, 6) %}<div class="bar-seg {{ 'on' if i <= post.data.difficulty }}"></div>{% endfor %}
+<div class="home-layout">
+  {% if collections.posts.length %}
+  <aside class="category-sidebar">
+    <button type="button" class="sidebar-toggle" id="sidebar-toggle">
+      분류 <span class="icon" id="sidebar-toggle-icon">▾</span>
+    </button>
+    <div class="category-list" id="category-filter">
+      <button type="button" data-filter="all" class="active">전체</button>
+      {% for key, label in categoryLabel %}
+      <button type="button" data-filter="{{ key }}">{{ label }}</button>
+      {% endfor %}
     </div>
-    {% endif %}
-    <span class="meta">{{ post.date | readableDate }}</span>
-  </a>
-{% else %}
-  <div class="empty-state">아직 작성된 글이 없어요. /admin 에서 첫 글을 써보세요.</div>
-{% endfor %}
-</div>
+  </aside>
+  {% endif %}
 
-<p class="empty-state" id="no-match-message" style="display:none;">이 분류에는 아직 글이 없어요.</p>
+  <div class="post-list-wrap">
+    <div class="post-list" id="post-list">
+    {% for post in collections.posts %}
+      <a class="post-card" data-category="{{ post.data.category }}" href="{{ post.url }}">
+        <span class="badge {{ post.data.category }}">{{ categoryLabel[post.data.category] }}</span>
+        <h2>{{ post.data.title }}</h2>
+        <p class="game-name">{{ post.data.game }}</p>
+        {% if post.data.difficulty %}
+        <div class="bar-row">
+          <span class="bar-label">난이도</span>
+          {% for i in range(1, 6) %}<div class="bar-seg {{ 'on' if i <= post.data.difficulty }}"></div>{% endfor %}
+        </div>
+        {% endif %}
+        <span class="meta">{{ post.date | readableDate }}</span>
+      </a>
+    {% else %}
+      <div class="empty-state">아직 작성된 글이 없어요. /admin 에서 첫 글을 써보세요.</div>
+    {% endfor %}
+    </div>
+    <p class="empty-state" id="no-match-message" style="display:none;">이 분류에는 아직 글이 없어요.</p>
+  </div>
+</div>
 
 <script>
 (function () {
+  var toggleBtn = document.getElementById('sidebar-toggle');
+  var toggleIcon = document.getElementById('sidebar-toggle-icon');
+  var categoryList = document.getElementById('category-filter');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function () {
+      var collapsed = categoryList.classList.toggle('is-collapsed');
+      toggleBtn.classList.toggle('is-collapsed', collapsed);
+      toggleIcon.textContent = collapsed ? '▸' : '▾';
+    });
+  }
+
   var buttons = document.querySelectorAll('#category-filter button');
   var cards = document.querySelectorAll('#post-list .post-card');
   var noMatch = document.getElementById('no-match-message');
