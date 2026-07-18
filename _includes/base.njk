@@ -6,17 +6,25 @@
 <title>{{ title }} | {{ site.name }}</title>
 <meta name="description" content="{{ description or site.tagline }}">
 <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+{% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
 <meta property="og:type" content="{{ ogType or 'website' }}">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:locale" content="ko_KR">
 <meta property="og:title" content="{{ title }}">
 <meta property="og:description" content="{{ description or site.tagline }}">
 <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="{{ site.url }}/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="google-site-verification" content="{{ site.googleVerification }}" />
 <link rel="icon" href="/assets/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="/feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
+{% if jsonLd %}
+<script type="application/ld+json">{{ jsonLd | dump | safe }}</script>
+{% endif %}
 </head>
 <body>
 
@@ -25,6 +33,7 @@
     <a class="logo display" href="/">{{ site.name }}</a>
     <nav>
       <a href="/">홈</a>
+      <a href="/feed.xml">RSS</a>
     </nav>
   </div>
 </header>
@@ -52,3 +61,4 @@
 
 </body>
 </html>
+
